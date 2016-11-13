@@ -8,7 +8,7 @@
     android:divider="@drawable/divider_horizontal"
     android:orientation="vertical"
     android:showDividers="middle"
-    tools:context="cn.wydewy.medicalapp.Register_Activity">
+    tools:context="cn.wydewy.medicalapp.Login_Activity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:text="输入以下信息进行注册"
+            android:text="为了保障你的账户安全，请填写已下信息进行登陆"
             android:textSize="12dp" />
 
         <EditText
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:background="@drawable/shape_label"
-            android:hint="请输入注册的身份证"
+            android:hint="请输入已注册的身份证"
             android:textSize="15dp" />
 
         <EditText
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:background="@drawable/shape_label"
-            android:hint="请输入注册的手机号码"
+            android:hint="请输入已注册的手机号码"
             android:textSize="15dp" />
 
         <EditText
@@ -80,21 +80,18 @@
             android:hint="请输入密码"
             android:textSize="15dp" />
 
-        <EditText
-            android:id="@+id/repeat_password"
+        <Button
+            android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:background="@drawable/shape_label"
-            android:inputType="textPassword"
-            android:hint="请再次输入密码"
-            android:textSize="15dp" />
+            android:onClick="loginOnClick"
+            android:text="登录" />
 
         <Button
             android:id="@+id/register_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="registerOnClick"
+            android:onClick="goRegisterOnClick"
             android:text="注册" />
     </LinearLayout>
 

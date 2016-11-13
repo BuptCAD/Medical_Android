@@ -1,4 +1,4 @@
-package cn.wydewy.medicalapp;
+package cn.wydewy.medicalapp.util;
 
 /**
  * Created by caosh on 2016/10/18.

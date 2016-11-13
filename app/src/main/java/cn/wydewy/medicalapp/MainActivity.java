@@ -1,18 +1,17 @@
 package cn.wydewy.medicalapp;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-
-import static cn.wydewy.medicalapp.R.id.date;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
@@ -21,8 +20,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private Fragment_hospital fHospital;
     private Fragment_my fMy;
     private FragmentManager fManager;
-    private data da;
-
+    private int page;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +30,23 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         initView();
         initEvent();
         fManager = getSupportFragmentManager();
-
-        da = (data) getApplication();
-        if(!da.isLog())
-            setSelect(0);
-        else
-            setSelect(1);
-
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+    }
+
+    private void initData() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            page = bundle.getInt("page");
+        }
+        setSelect(page);
+    }
+
     private void initEvent() {
         btnhospital.setOnClickListener(this);
         btnmy.setOnClickListener(this);
@@ -58,7 +65,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 setSelect(0);
                 break;
             case R.id.btn2:
-                setSelect(1);
+                if (MedicalApplication.getInstance().isLog()) {
+                    setSelect(1);
+                } else {
+                    startActivity(new Intent(MainActivity.this, Login_Activity.class));
+                }
                 break;
         }
     }
@@ -95,10 +106,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             transaction.hide(fMy);
         }
     }
-    public void ChangeOnClick(View view)
-    {
-        switch (view.getId())
-        {
+
+    public void ChangeOnClick(View view) {
+        switch (view.getId()) {
             case R.id.item1:
                 Intent it = new Intent(this, Introduce_Activity.class);
                 startActivity(it);
@@ -117,6 +127,34 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 startActivity(it5);
                 break;
         }
+    }
+
+
+    private long exitTime = 0;
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN ) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.touch_again_to_exit),
+                        Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
 }

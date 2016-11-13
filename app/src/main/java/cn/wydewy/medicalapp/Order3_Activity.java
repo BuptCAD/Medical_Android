@@ -1,8 +1,9 @@
 package cn.wydewy.medicalapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -10,20 +11,29 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import cn.wydewy.medicalapp.model.OutPatient;
+import cn.wydewy.medicalapp.util.Constant;
 
 public class Order3_Activity extends AppCompatActivity {
 
-    private String[] items = new String[]{"门诊一","门诊二"};
+    private List<OutPatient> items = new ArrayList<>();
+    private String sectionId;
+    private BaseAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,40 +42,65 @@ public class Order3_Activity extends AppCompatActivity {
 
         Intent intent = getIntent(); //用于激活它的意图对象：这里的intent获得的是上个Activity传递的intent
         Bundle bundle = intent.getExtras();
-        String item = bundle.getString("selectedItem");
+        sectionId = bundle.getString(Constant.SECTION_ID);
+        initListView();
 
-        String url = "";
-        Map<String,String> map = new HashMap<>();
-        map.put("item","");
-        JSONObject data = new JSONObject(map);     //传值
+        outpatients();
+    }
 
-        RequestQueue mqueu = Volley.newRequestQueue(this);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url,data,
+    private void outpatients() {
+        Map<String, String> map = new HashMap<>();
+        map.put("sectionId", sectionId);
+        CustomRequest objectRequest = new CustomRequest(Request.Method.POST, Constant.API_OUTPATIENTS, map,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
-                        jsonObject.optString("data");    //这里要得到后台传来的门诊数和各个门诊的名字
+                        Log.d("TAG-response", jsonObject.toString());
+                        String itemsStr = null;
+                        try {
+                            itemsStr = jsonObject.get("datum").toString();
+                            items = JSON.parseObject(itemsStr, new TypeReference<List<OutPatient>>() {
+                            });
+                            adapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        } finally {
+
+                        }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
+                }
 
-                    }
-                });
+                , new Response.ErrorListener()
 
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("TAG-error", volleyError.toString());
+            }
+        }
 
+        );
+        MedicalApplication.getInstance().
 
+                addToRequestQueue(objectRequest);
+    }
+
+    /**
+     * 初始化listView
+     */
+    private void initListView() {
         ListView introlist = (ListView) findViewById(R.id.introduce_list3);
-        BaseAdapter adapter = new BaseAdapter() {
+
+        adapter = new BaseAdapter() {
             @Override
             public int getCount() {
-                return 2;
+                return items.size();
             }
 
             @Override
-            public Object getItem(int position) {
-                return null;
+            public OutPatient getItem(int position) {
+                return items.get(position);
             }
 
             @Override
@@ -76,25 +111,26 @@ public class Order3_Activity extends AppCompatActivity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView text = new TextView(Order3_Activity.this);
-                text.setText(items[position]);
-                text.setPadding(50,50,0,50);
-                text.setTextColor(android.graphics.Color.rgb(0,0,0));
+                OutPatient outPatient = getItem(position);
+                text.setText(outPatient.getOutpatientName());
+                text.setPadding(50, 50, 0, 50);
+                text.setTextColor(android.graphics.Color.rgb(0, 0, 0));
                 text.setTextSize(15);
                 return text;
             }
         };
         introlist.setAdapter(adapter);
-        introlist.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        introlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent it = new Intent(Order3_Activity.this,Confirm_Activity.class);
+                Intent it = new Intent(Order3_Activity.this, Schedule_Activity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("selectedItem",items[position]);
+                bundle.putString(Constant.OUTPATIENT_ID, items.get(position).getOutpatientId());
                 it.putExtras(bundle);
-                startActivityForResult(it,0);
+                startActivity(it);
             }
         });
     }
+
 }

@@ -6,4 +6,5 @@
     <string name="xiao_yiyuan">校医院</string>
     <string name="wo">我</string>
     <string name="hospitaltrans">医院交通</string>
+    <string name="touch_again_to_exit">再点击一次退出程序</string>
 </resources>

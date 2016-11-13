@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class Order_Activity extends AppCompatActivity implements OnClickListener{
+public class Order_Activity extends AppCompatActivity implements OnClickListener {
 
 
     @Override
@@ -18,11 +18,20 @@ public class Order_Activity extends AppCompatActivity implements OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.register:
-                Intent it = new Intent(this, Register_Activity.class);
-                startActivity(it);
+                if (MedicalApplication.getInstance().isLog()) {
+                    Intent it = new Intent(this, MainActivity.class);
+                    it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("page", 1);
+                    it.putExtras(bundle);
+                    startActivity(it);
+                } else {
+                    Intent it = new Intent(this, Login_Activity.class);
+                    startActivity(it);
+                }
                 break;
             case R.id.order2:
                 Intent it1 = new Intent(this, Order2_Activity.class);

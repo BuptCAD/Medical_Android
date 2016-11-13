@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".data"
+        android:name=".MedicalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,11 +21,12 @@
         <activity android:name=".Introduce_Activity" />
         <activity android:name=".Guide_Activity" />
         <activity android:name=".Order_Activity" />
-        <activity android:name=".Register_Activity" />
+        <activity android:name=".Login_Activity" />
         <activity android:name=".Order2_Activity" />
         <activity android:name=".Schedule_Activity" />
-        <activity android:name=".Confirm_Activity"></activity>
-        <activity android:name=".Order3_Activity"></activity>
+        <activity android:name=".Confirm_Activity" />
+        <activity android:name=".Order3_Activity" />
+        <activity android:name=".Register_Activity"></activity>
     </application>
 
 </manifest>
