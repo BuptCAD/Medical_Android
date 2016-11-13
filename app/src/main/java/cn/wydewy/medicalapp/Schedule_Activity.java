@@ -25,11 +25,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import cn.wydewy.medicalapp.model.ReleaseNum;
 import cn.wydewy.medicalapp.util.Constant;
@@ -74,7 +72,7 @@ public class Schedule_Activity extends AppCompatActivity {
         Map<String, String> map = new HashMap<>();
         map.put("outpatientId", outpatientId);
         map.put("week", week);
-        CustomRequest objectRequest = new CustomRequest(Request.Method.POST, Constant.API_RELEASENUM, map,
+        CustomRequest objectRequest = new CustomRequest(Request.Method.POST, Constant.API_OUTPATIENT_RELEASENUM_LIST, map,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {

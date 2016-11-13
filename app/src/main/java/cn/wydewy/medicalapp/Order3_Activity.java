@@ -51,7 +51,7 @@ public class Order3_Activity extends AppCompatActivity {
     private void outpatients() {
         Map<String, String> map = new HashMap<>();
         map.put("sectionId", sectionId);
-        CustomRequest objectRequest = new CustomRequest(Request.Method.POST, Constant.API_OUTPATIENTS, map,
+        CustomRequest objectRequest = new CustomRequest(Request.Method.POST, Constant.API_SECTION_OUTPATIENT_LIST, map,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {

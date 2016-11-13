@@ -15,11 +15,8 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,11 +24,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.wydewy.medicalapp.model.Customer;
 import cn.wydewy.medicalapp.model.Section;
 import cn.wydewy.medicalapp.util.Constant;
-
-import static cn.wydewy.medicalapp.R.id.activity_order2;
 
 public class Order2_Activity extends AppCompatActivity {
     private List<Section> items = new ArrayList<>();
@@ -49,7 +43,7 @@ public class Order2_Activity extends AppCompatActivity {
     }
 
     private void sections() {
-        CustomRequest objectRequest = new CustomRequest(Request.Method.POST, Constant.API_SECTIONS, null,
+        CustomRequest objectRequest = new CustomRequest(Request.Method.POST, Constant.API_HOSPITAL_SECTION_LIST, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
